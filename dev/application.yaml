@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1  # API Version will change if releases of argocd changes
+kind: Application
+metadata: 
+  name: myapp-argocd-application
+  namespace: argocd
+spec:
+  project: default             # Every application belong to a single project(If not speified goes to default project)
+
+
+  source:                     # Git repository
+    repoURL: https://github.com/Savegirlchild/argocd-app.git
+    targetRevision: HEAD      # Take the last commit in the repository
+    path: dev                 # which path you want to sync with
+  destination:
+    server: https://kubernetes.default.svc  # Endpoint of k8s API Server 
+    namespace: myapp           # In which namespace this application configuration should be applied to
+  
+  syncPolicy:                  # If myapp namespace is not created this block can automatically create namespace
+    syncOptions:
+    - CreateNamespace=true     # ensures that the namespace specified exists in the destination cluster
+
+    automated:                 
+      selfHeal: true           # To automate sync which is by default is off
+      prune: true              # To automate delete the component if any yaml files are deleted from git
