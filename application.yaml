@@ -9,10 +9,10 @@ spec:
   source:
     repoURL: https://github.com/Savegirlchild/argocd-app.git
     targetRevision: HEAD
-    path: dev
+    path: demo/overlays/dev
   destination: 
     server: https://kubernetes.default.svc
-    namespace: myapp
+    namespace: default
 
   syncPolicy:
     syncOptions:
@@ -21,4 +21,5 @@ spec:
     automated:
       selfHeal: true
       prune: true
+         
          
